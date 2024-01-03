@@ -1,23 +1,16 @@
+import json
+# tested on page 1, 2 and 3
+key_set = ['srm', 'style', 'labels',
+           'glass', 'available', 'beerVariation']
+# temporarly added will remove later
+DATABASE_URI = 'postgresql+psycopg2://postgres:12345678@localhost/api'
 
 
-def camel_to_snake_singly(inputString: str):
-    # converts the word from camel case to snake case
-    # from nameDisplay to name-display
-    result = [inputString[0].lower()]
-    for symbol in inputString[1:]:
-        if symbol.isupper():
-            result.extend(['_', symbol.lower()])
-        else:
-            result.append(symbol)
-    return ''.join(result)
-
-
-def camel_to_snake(data):
-    # converts the camel case keys name snake case keys
-    if (type(data) == dict):
-        _tempDict = {}
-        for key, value in data.items():
-            _tempDict[camel_to_snake_singly(key)] = camel_to_snake(value)
-        return _tempDict
-    else:
-        return data
+def parseDictToJsonString(Modler, data_json):
+    dataModelList = []
+    for item in data_json['data']:
+        for key in key_set:
+            if key in item.keys():
+                item[key] = json.dumps(item[key])
+        dataModelList.append(Modler(**item))
+    return dataModelList

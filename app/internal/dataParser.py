@@ -2,7 +2,7 @@ import json
 # tested on page 1, 2 and 3
 key_set = ['srm', 'style', 'labels',
            'glass', 'available', 'beerVariation']
-# temporarly added will remove later
+# temporarily added will remove later
 DATABASE_URI = 'postgresql+psycopg2://postgres:12345678@localhost/api'
 
 

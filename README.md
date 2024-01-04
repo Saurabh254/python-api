@@ -17,6 +17,7 @@ The BeerData API is a dynamic and efficient application designed to provide user
     - [Method: GET](#method-get-1)
       - [Parameters:](#parameters-1)
     - [Method: GET](#method-get-2)
+      - [Parameters:](#parameters-2)
 - [Contributing](#contributing)
 
 ## Installation
@@ -53,19 +54,27 @@ Insert a page into the database along with its associated data.
 ### Method: GET
 
 #### Parameters:
-   - page_number (int): The page number to be inserted.
+
     `/remove/{page_number}`
+
+  - page_number (int): The page number to be inserted.
 Remove a page from the database along with its associated data.
 
 ### Method: GET
 
 #### Parameters:
-   - page_number (int): The page number to be removed.
-`/page/{page_number}`
+
+  `/page/{page_number}`
+
+  - page_number (int): The page number to be removed.
 Retrieve information about a specific page of beer data with optional ABV and IBU filters.
 
 ### Method: GET
-Parameters:
+
+#### Parameters:
+
+  `/{page_number}?abv={abv_value}&ibu={ibu_value}`
+
 - page_number (int): Page number to be viewed.
 - abv (float, optional): ABV value to be filtered. Defaults to None.
 - ibu (int, optional): IBU value to be filtered. Defaults to None.

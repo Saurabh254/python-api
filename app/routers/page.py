@@ -1,13 +1,7 @@
-from fastapi import APIRouter
-import json
-import pathlib
-from fastapi.logger import logger
+from fastapi import APIRouter, HTTPException
 from ..dependency import getDataFromBeerDataSet
-from fastapi import HTTPException
-from pprint import pprint
 
-
-# defining APIRouter for the /page endpoint
+# Defining APIRouter for the /page endpoint
 router = APIRouter(
     prefix="/page",
     tags=["page"],
@@ -18,55 +12,63 @@ router = APIRouter(
 
 @router.get('/{page_number}', tags=['page'])
 async def render_page(page_number: int, abv: float = None, ibu: int = None):
-    """_summary_
+    """
+    Retrieve information about a specific page of beer data with optional ABV and IBU filters.
 
     Args:
-        page_number (int): Page number to be viewed
-        abv (float, optional): abv value to be filtered. Defaults to None.
-        ibu (int, optional): ibu value to be filter. Defaults to None.
+        page_number (int): Page number to be viewed.
+        abv (float, optional): ABV value to filter by. Defaults to None.
+        ibu (int, optional): IBU value to filter by. Defaults to None.
 
     Raises:
-        HTTPException: Exception will raised when the desire page is not available
+        HTTPException: Raised when the desired page is not available.
 
     Returns:
-        _type_: json object
+        dict: JSON object containing the requested beer data.
+
+    Example Usage:
+        - `/page/1`: Retrieve all data for page 1.
+        - `/page/2?abv=5.0`: Retrieve data for page 2 with ABV filter.
+        - `/page/3?ibu=30`: Retrieve data for page 3 with IBU filter.
+        - `/page/4?abv=5.0&ibu=30`: Retrieve data for page 4 with both ABV and IBU filters.
     """
-
     try:
-        # fetch the jsonObject data
+        # Fetch the JSON object data for the specified page
         data = getDataFromBeerDataSet(page_number)
-        # if abv and ibu values ain't defined well return the data
-        if (abv == None and ibu == None):
+
+        # If ABV and IBU values are not defined, return the entire data
+        if abv is None and ibu is None:
             return data
-    # exception will occur if getDataFromBeerDataSet unable to parse the page data
+
     except Exception as e:
-        raise HTTPException(status_code=404, detail="Item not found")
+        # Raise an HTTPException if getDataFromBeerDataSet is unable to parse the page data
+        raise HTTPException(status_code=404, detail="Page not found")
 
-    # for storing the matching objects
-    newData = []
+    # Initialize a list to store matching objects based on ABV and IBU filters
+    new_data = []
 
-    # parsing data on the basis of ibu and abv value
+    # Parse data based on ABV and IBU values
     if ibu and abv:
         for item in data['data']:
             if 'abv' in item.keys() and float(item['abv']) == abv:
                 if 'ibu' in item.keys() and int(item['ibu']) == ibu:
-                    newData.append(item)
+                    new_data.append(item)
     else:
         if abv:
             for item in data['data']:
                 if 'abv' in item.keys() and float(item['abv']) == abv:
-                    newData.append(item)
+                    new_data.append(item)
         elif ibu:
             for item in data['data']:
                 if 'ibu' in item.keys() and int(item['ibu']) == ibu:
-                    newData.append(item)
+                    new_data.append(item)
 
-    # resulting object
-    _data = {
+    # Construct the resulting object
+    result_data = {
         "currentPage": page_number,
-        "resultLength": len(newData),
-        "data": newData,
+        "resultLength": len(new_data),
+        "data": new_data,
         "status": "success"
     }
 
-    return _data
+    return result_data

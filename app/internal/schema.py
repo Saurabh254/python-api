@@ -14,10 +14,10 @@ class Base(DeclarativeBase):
 
 
 class BeerData(Base):
-    __tablename__ = "beerData"
+    __tablename__ = "beer_data"
     id: Mapped[str] = mapped_column(String, primary_key=True)
-    beer_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(f'beer_page.id'))
+    beer_currentPage: Mapped[int] = mapped_column(
+        Integer, ForeignKey(f'beer_page.currentPage'))
     name: Mapped[Optional[str]]
     nameDisplay: Mapped[Optional[str]]
     description: Mapped[Optional[str]]
@@ -45,18 +45,14 @@ class BeerData(Base):
     originalGravity: Mapped[Optional[float]]
     beerVariationId: Mapped[Optional[str]]
     beerVariation = Column(JSON)
+    beer = relationship('Beer', back_populates='data')
 
 
 class Beer(Base):
     __tablename__ = 'beer_page'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    currentPage: Mapped[int]
+    currentPage: Mapped[int] = mapped_column(Integer, primary_key=True)
     numberOfPages: Mapped[int]
     totalResults: Mapped[int]
     data: Mapped[list[BeerData]] = relationship(
-        'BeerData', cascade='all, delete-orphan')
+        'BeerData', back_populates='beer', cascade='all, delete-orphan')
     status: Mapped[Optional[str]]
-
-
-class Pages(Base):
-    __tablename__ = 'beer_pages'

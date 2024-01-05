@@ -27,7 +27,7 @@ The BeerData API is a dynamic and efficient application designed to provide user
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone https://github.com/Saurabh254/python-api.git
     ```
 2. Navigate to the project directory
    ```shell

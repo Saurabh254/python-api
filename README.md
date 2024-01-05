@@ -18,6 +18,8 @@ The BeerData API is a dynamic and efficient application designed to provide user
       - [Parameters:](#parameters-1)
     - [Method: GET](#method-get-2)
       - [Parameters:](#parameters-2)
+    - [Method: GET](#method-get-3)
+      - [Parameters:](#parameters-3)
 - [Contributing](#contributing)
 
 ## Installation
@@ -48,8 +50,13 @@ uvicorn app.main:app
 
 ## API Endpoints
 
-`/import/{page_number}`
-Insert a page into the database along with its associated data.
+### Method: GET
+
+#### Parameters:
+
+  `/import/{page_number}`
+
+ - Insert a page into the database along with its associated data.
 
 ### Method: GET
 
@@ -66,8 +73,7 @@ Remove a page from the database along with its associated data.
 
   `/page/{page_number}`
 
-  - page_number (int): The page number to be removed.
-Retrieve information about a specific page of beer data with optional ABV and IBU filters.
+  - Retrieve information about a specific page of beer data.
 
 ### Method: GET
 

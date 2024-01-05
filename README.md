@@ -62,7 +62,7 @@ uvicorn app.main:app
 
 #### Parameters:
 
-    `/remove/{page_number}`
+  `/remove/{page_number}`
 
   - page_number (int): The page number to be inserted.
 Remove a page from the database along with its associated data.
